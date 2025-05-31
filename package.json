@@ -4,15 +4,27 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "dev": " node app.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": ["expense", "split", "group", "bill"],
   "author": "",
+  "contributors": [
+    {
+      "name": "Odusola Oluwasemilore",
+      "github": "https://gitbub.com/SODUSOLA",
+      "email": "odusolasemilore@gmail.com"
+    }
+  ],
   "license": "ISC",
-  "description": "",
+  "description": "Group expense sharing and bill splitting app",
   "dependencies": {
-    "expressjs": "^1.0.1",
-    "nodemon": "^3.1.10"
+    "express": "^4.18.2",
+    "mongoose": "^7.6.1",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
   }
 }
