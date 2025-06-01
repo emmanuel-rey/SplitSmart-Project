@@ -16,14 +16,14 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 - Basic user authentication (sign up, log in)
 
 ## API Endpoints
-bash 
+```bash 
 `POST /api/users` - Create a new user
 `POST /api/auth/login` - User login
 `GET /api/auth/logout` - User logout
 `POST /api/groups` - Create a new group
 `POST /api/expenses` - Add an expense to a group
 `GET /api/groups/:id` - Get group details and balances
-
+```
 
 ## 🪖 Tech Stack
 - *Frontend*: React, TailwindCSS
@@ -35,7 +35,7 @@ bash
 ---
 
 ## 📂 Project Structure
-
+```
 SplitSmart/
 ├── backend/
 │   ├── controllers/
@@ -53,7 +53,7 @@ SplitSmart/
 ├── .env
 ├── README.md
 
-
+```
 ---
 
 
