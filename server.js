@@ -1,4 +1,5 @@
 const dotenv = require("dotenv");
+import groupRoutes from './Routes/groupRoute.js';
 const express = require('express');
 const connectDB = require('./config/db.js');
 const cors = require('cors');
@@ -20,8 +21,11 @@ mongoose.connect('mongodb://localhost:27017/splitsmart', { useNewUrlParser: true
 // Routes
 app.use('/api/users', require('./Routes/userRoute.js'));
 
+// Group routes
+app.use('/api/groups', groupRoutes);
+
 // Test route
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
     res.send('SplitSmart API is running...');
 });
 
