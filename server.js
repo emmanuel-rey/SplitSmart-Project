@@ -2,7 +2,7 @@ const dotenv = require("dotenv");
 const express = require('express');
 const connectDB = require('./config/db.js');
 const cors = require('cors');
-const userRoutes = require("./Routes/userRoute");
+const mongoose = require('mongoose');
 
 dotenv.config();
 
@@ -14,16 +14,11 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
-// // DB connection
+// DB connection
 mongoose.connect('mongodb://localhost:27017/splitsmart', { useNewUrlParser: true, useUnifiedTopology: true });
-// After user.save()
-console.log('User saved:', user);
-
-
 
 // Routes
 app.use('/api/users', require('./Routes/userRoute.js'));
-
 
 // Test route
 app.get('/', (req, res) => {
