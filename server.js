@@ -1,8 +1,8 @@
-const dotenv = require("dotenv");
-const express = require('express');
-const connectDB = require('./config/db.js');
-const cors = require('cors');
-const mongoose = require('mongoose');
+import dotenv from "dotenv";
+import express from "express";
+import connectDB from "./config/db.js";
+import cors from "cors";
+import mongoose from "mongoose";
 
 dotenv.config();
 
@@ -18,12 +18,13 @@ app.use(express.json());
 mongoose.connect('mongodb://localhost:27017/splitsmart', { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Routes
-app.use('/api/users', require('./Routes/userRoute.js'));
+import userRoutes from "./Routes/userRoute.js";
+app.use('/api/users', userRoutes);
 
 // Test route
 app.get('/', (req, res) => {
     res.send('SplitSmart API is running...');
 });
 
-const PORT = process.env.PORT || 4000; 
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on https://localhost: ${PORT}`));
