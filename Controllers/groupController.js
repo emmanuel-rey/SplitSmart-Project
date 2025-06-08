@@ -2,7 +2,7 @@ import Group from '../Models/groupModel.js';
 // import User from '../Models/userModel.js';
 
 //Create a new group
-const createGroup = async (req, res) => {
+export const createGroup = async (req, res) => {
     const { name,description,members} = req.body;
     const userId = req.user.id;
 
