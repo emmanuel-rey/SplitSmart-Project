@@ -30,3 +30,29 @@ export const registerUser = async (req, res) => {
         res.status(500).json({ message: 'Server error ' });
     }
 };
+export const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        // Check if user exists
+        const user = await User.findOne({ email });
+        if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+
+        // Check password
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+
+        // Generate token
+        const payload = { user: { id: user._id } };
+        const token = jwt.sign(payload, process.env.JWT_SECRET, {
+            expiresIn: '1h'
+        });
+
+        res.status(200).json({
+            message: 'User logged in successfully',
+            token,
+            user: { id: user._id, username: user.username, email: user.email }
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
