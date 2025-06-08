@@ -21,5 +21,10 @@ UserSchema.pre('save', async function (next) {
     }
 });
 
+// Compare plain password with hashed
+UserSchema.methods.comparePassword = async function (enteredPassword) {
+    return await bcrypt.compare(enteredPassword, this.password);
+};
+
 const User = mongoose.model('User', UserSchema);
 export default User;
