@@ -53,7 +53,7 @@ export const loginUser = async (req, res) => {
             user: { id: user._id, username: user.username, email: user.email }
         });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' });
-    }
+    logger.error(`User registration failed: ${error.message}`);
+    res.status(500).json({ message: 'Server error' });
+     }
 }

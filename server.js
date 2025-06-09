@@ -20,7 +20,7 @@ app.use(cors());
 app.use(express.json());
 
 // DB connection
-mongoose.connect('mongodb://localhost:27017/splitsmart', { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect('?mongodb://localhost:27017/splitsmart', { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Routes
 import userRoutes from "./Routes/userRoute.js";
@@ -33,6 +33,17 @@ app.use('/api/groups', groupRoutes);
 // Test route
 app.get('/', (_req, res) => {
     res.send('SplitSmart API is running...');
+});
+
+app.get('/health', (_req,res) => {
+    res.status(200).json(
+        {
+            status: "Good",
+            message: "SplitSmart API is running smoothly",
+            dbstatus: mongoose.connection.readyState === 1 ? "Connected" : "Disconnected",
+            timestamp: new Date()
+        }
+    );
 });
 
 const specs = swaggerJSDoc(swaggerOptions);
