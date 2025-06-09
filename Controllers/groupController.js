@@ -30,3 +30,4 @@ const createGroup = async (req, res) => {
     }
 
 };
+export { createGroup };
