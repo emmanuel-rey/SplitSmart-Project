@@ -3,9 +3,11 @@ import express from "express";
 import connectDB from "./config/db.js";
 import cors from "cors";
 import mongoose from "mongoose";
-import http from "http";
-import fs from "fs";
 import app from "./app.js"
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './swagger.js';
+import expenseRoutes from "./Routes/expenseRoute.js";
+import settlementRoutes from "./Routes/settlementRoute.js";
 
 
 dotenv.config();
@@ -31,10 +33,19 @@ app.use('/api/users', userRoutes);
 // Group routes
 app.use('/api/groups', groupRoutes);
 
+// Expense routes
+app.use('/api/expenses', expenseRoutes);
+
+// Settlement routes
+app.use('/api/settlements', settlementRoutes);
+
 // Test route
 app.get('/', (_req, res) => {
     res.send('SplitSmart API is running...');
 });
+
+// Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
