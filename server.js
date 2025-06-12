@@ -3,16 +3,17 @@ import express from "express";
 import connectDB from "./config/db.js";
 import cors from "cors";
 import mongoose from "mongoose";
-import swaggerJSDoc from 'swagger-jsdoc';
+import app from "./app.js"
 import swaggerUi from 'swagger-ui-express';
-
-import swaggerOptions from './config/swagger.js'; // Import your config
+import swaggerSpec from './swagger.js';
+import expenseRoutes from "./Routes/expenseRoute.js";
+import settlementRoutes from "./Routes/settlementRoute.js";
 
 
 dotenv.config();
 
 // Initialize express app and connect to the database
-const app = express();
+// const app = express();
 connectDB();
 
 // Middleware
@@ -20,34 +21,31 @@ app.use(cors());
 app.use(express.json());
 
 // DB connection
-// mongoose.connect('?mongodb://localhost:27017/splitsmart', { useNewUrlParser: true, useUnifiedTopology: true });
+//mongoose.connect('mongodb://localhost:27017/splitsmart', { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Routes
-import userRoutes from "./Routes/userRoute.js";
 import groupRoutes from "./Routes/groupRoute.js";
+import userRoutes from "./Routes/userRoute.js";
+
+// User routes
 app.use('/api/users', userRoutes);
 
 // Group routes
 app.use('/api/groups', groupRoutes);
+
+// Expense routes
+app.use('/api/expenses', expenseRoutes);
+
+// Settlement routes
+app.use('/api/settlements', settlementRoutes);
 
 // Test route
 app.get('/', (_req, res) => {
     res.send('SplitSmart API is running...');
 });
 
-app.get('/health', (_req,res) => {
-    res.status(200).json(
-        {
-            status: "Good",
-            message: "SplitSmart API is running smoothly",
-            dbstatus: mongoose.connection.readyState === 1 ? "Connected" : "Disconnected",
-            timestamp: new Date()
-        }
-    );
-});
-
-const specs = swaggerJSDoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+// Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`Server running on https://localhost: ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

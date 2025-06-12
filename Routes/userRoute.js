@@ -1,75 +1,37 @@
 import express from 'express';
-import { registerUser,loginUser } from '../Controllers/userController.js';
+import { registerUser } from '../Controllers/userController.js';
+import { loginUser } from '../Controllers/userController.js';
 
 const router = express.Router();
 
-/**
- * @swagger
- * /api/users/register:
- *   post:
- *     summary: Register a new user
- *     tags: [Users]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/User'
- *     responses:
- *       201:
- *         description: User registered successfully
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 token:
- *                   type: string
- *                 user:
- *                   type: object
- *                   properties:
- *                     id:
- *                       type: string
- *                     username:
- *                       type: string
- *                     email:
- *                       type: string
- *       400:
- *         description: User already exists
- *       500:
- *         description: Server error
- */
 
-// POST /api/users
-router.post('/register', registerUser);
+// swagger documentation for user login
 
 /**
  * @swagger
  * /api/users/login:
  *   post:
- *     summary: Login an existing user
- *     tags: [Users]
+ *     summary: Log in a user
+ *     tags: [Auth]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *                 example: user@example.com
- *               password:
- *                 type: string
- *                 format: password
- *                 example: password123
  *             required:
  *               - email
  *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: user@example.com
+ *               password:
+ *                 type: string
+ *                 example: password123
  *     responses:
  *       200:
- *         description: User logged in successfully
+ *         description: Successfully logged in
  *         content:
  *           application/json:
  *             schema:
@@ -77,20 +39,54 @@ router.post('/register', registerUser);
  *               properties:
  *                 token:
  *                   type: string
- *                 user:
- *                   type: object
- *                   properties:
- *                     id:
- *                       type: string
- *                     username:
- *                       type: string
- *                     email:
- *                       type: string
- *       400:
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6...
+ *       401:
  *         description: Invalid credentials
- *       500:
- *         description: Server error
  */
-router.post('/login',loginUser);
+
+
+// swagger documentation for user registration
+
+/**
+ * @swagger
+ * /api/users/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *               - password
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Jane Doe
+ *               email:
+ *                 type: string
+ *                 example: janedoe@example.com
+ *               password:
+ *                 type: string
+ *                 example: password123
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *       400:
+ *         description: User already exists or bad input
+ */
+
+
+
+
+
+// POST /api/users
+router.post('/register', registerUser);
+router.post('/login', loginUser);
 
 export default router;
+

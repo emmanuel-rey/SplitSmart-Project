@@ -4,15 +4,16 @@ export const authMiddleware = (req, res, next) => {
     
     const token = req.headers.authorization?.split(' ')[1];
 
-    if(!token){
-        return res.status(401).json({message: 'No token provided, authorization denied'});
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided, authorization denied' });
     }
 
-    try{
+    try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded.user; // Attach the user information to the request object
-        next(); // Call the next middleware or route handler
-    } catch(err){
-        res.status(401).json({message: 'Token is not valid', error: err.message});
+        req.user = decoded;
+        next();
+    } catch (err) {
+        res.status(401).json({ message: 'Token is not valid', error: err.message });
     }
-};
+    };
+
