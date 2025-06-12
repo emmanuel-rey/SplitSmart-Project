@@ -15,7 +15,7 @@ import bcrypt from 'bcryptjs';
         // Create new user
         const newUser = new User({ username, email, password });
         await newUser.save();
-        res.status(200).json({ message: 'User registered successfully' });
+        // res.status(200).json({ message: 'User registered successfully' });
 
         // Generate token 
         const payload = { user: { id: newUser._id } };
