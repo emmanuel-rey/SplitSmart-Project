@@ -12,8 +12,7 @@ import settlementRoutes from "./Routes/settlementRoute.js";
 
 dotenv.config();
 
-// Initialize express app and connect to the database
-// const app = express();
+// Connect to the database
 connectDB();
 
 // Middleware
@@ -21,7 +20,7 @@ app.use(cors());
 app.use(express.json());
 
 // DB connection
-//mongoose.connect('mongodb://localhost:27017/splitsmart', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost:27017/splitsmart', { useNewUrlParser: true, useUnifiedTopology: true });
 
 // Routes
 import groupRoutes from "./Routes/groupRoute.js";

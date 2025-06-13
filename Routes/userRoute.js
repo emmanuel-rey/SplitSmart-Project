@@ -60,11 +60,11 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             required:
- *               - name
+ *               - username
  *               - email
  *               - password
  *             properties:
- *               name:
+ *               username:
  *                 type: string
  *                 example: Jane Doe
  *               email:

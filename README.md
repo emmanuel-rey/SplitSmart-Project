@@ -69,15 +69,15 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 
 ## 🔄 API Routes Overview
 
-| Endpoint                         | Method | Description                   | Auth Required |
-|----------------------------------|--------|-------------------------------|----------------|
-| `/api/users/register`           | POST   | Register a new user           | ❌             |
-| `/api/users/login`              | POST   | Log in user, returns JWT      | ❌             |
-| `/api/groups`                   | POST   | Create a new group            | ✅             |
-| `/api/expenses`                 | POST   | Add expense to group          | ✅             |
-| `/api/expenses/group/:groupId` | GET    | View all group expenses       | ✅             |
-| `/api/settlements/group/:id`   | GET    | View group settlements        | ✅             |
-| `/api-docs`                     | GET    | Swagger API Documentation     | ❌             |
+| Endpoint                         | Method | Description                   | Auth Required  |
+|----------------------------------|--------|-------------------------------|---------------  |
+| `/api/users/register`            | POST   | Register a new user           | ❌              |
+| `/api/users/login`               | POST   | Log in user, returns JWT      | ❌              |
+| `/api/groups`                    | POST   | Create a new group            | ✅              |
+| `/api/expenses`                  | POST   | Add expense to group          | ✅              |
+| `/api/expenses/group/:groupId`   | GET    | View all group expenses       | ✅              |
+| `/api/settlements/group/:id`     | GET    | View group settlements        |  ✅             |
+| `/api-docs`                      | GET    | Swagger API Documentation     | ❌              |
 
 ---
 
