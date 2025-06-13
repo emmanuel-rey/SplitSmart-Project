@@ -2,7 +2,7 @@ import express from 'express';
 import {
     getSettlementSummary,
     settleUp
-} from '../controllers/settlementController.js';
+} from '../Controllers/settlementController.js';
 
 
 // swagger documentation for settlement routes
