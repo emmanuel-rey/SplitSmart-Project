@@ -1,8 +1,7 @@
 import express from 'express';
-import {
-    addExpense,
-    getExpensesByGroup
-} from '../controllers/expenseController.js';
+import { addExpense } from '../Controllers/expenseController.js';
+import { getExpensesByGroup } from '../Controllers/expenseController.js';
+import { authMiddleware as protect } from '../Middlewares/authMiddleware.js';
 
 const router = express.Router();
 
@@ -70,6 +69,9 @@ const router = express.Router();
  *         description: List of expenses
  */
 
+
+// Middleware to protect routes
+router.use('/:groupId', protect);
 
 
 // POST: Add a new expense
