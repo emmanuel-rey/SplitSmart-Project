@@ -2,7 +2,7 @@ import express from 'express';
 import {
     addExpense,
     getExpensesByGroup
-} from '../controllers/expenseController.js';
+} from '../Controllers/expenseController.js';
 
 const router = express.Router();
 
