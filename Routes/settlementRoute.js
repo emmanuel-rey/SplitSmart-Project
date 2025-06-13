@@ -1,8 +1,8 @@
 import express from 'express';
-import {
-    getSettlementSummary,
-    settleUp
-} from '../Controllers/settlementController.js';
+
+import { getSettlementSummary } from '../Controllers/settlementController.js';
+import { settleUp } from '../Controllers/settlementController.js';
+import { authMiddleware as protect } from '../Middlewares/authMiddleware.js';
 
 
 // swagger documentation for settlement routes
@@ -65,6 +65,9 @@ import {
 
 
 const router = express.Router();
+
+// POST: Settle up between users
+router.post('/', protect, settleUp); // this handles POST /api/settlements
 
 // GET: Calculate who owes whom in a group
 router.get('/:groupId', getSettlementSummary);
