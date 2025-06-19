@@ -1,6 +1,6 @@
 import express from 'express';
 // import {createGroup, getGroups, getGroupById, updateGroup, deleteGroup} from '../Controllers/groupController.js';
-import { createGroup } from '../Controllers/groupController.js';
+import { createGroup, getAllGroups, getGroupById } from '../Controllers/groupController.js';
 import { authMiddleware as protect } from '../Middlewares/authMiddleware.js';
 
 const router = express.Router();
@@ -84,6 +84,7 @@ router.post('/', protect,createGroup);
  *       200:
  *         description: List of groups
  */
+router.get('/',protect, getAllGroups);
 
 /**
  * @swagger
@@ -108,7 +109,7 @@ router.post('/', protect,createGroup);
 
 
 
-router.post('/', protect, createGroup);
+router.get('/:id', protect, getGroupById);
 
 
 

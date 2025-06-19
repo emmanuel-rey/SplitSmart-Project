@@ -56,3 +56,37 @@ export const createGroup = async (req, res) => {
     }
 };
 
+export const getAllGroups = async (req, res) => {
+
+    try {
+
+        const userId = req.user.id;
+
+        const groups = await Group.find({members:userId})
+        .populate('members', 'username email')
+        .populate('createdBy', 'username email');
+
+        res.status(200).json(groups);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Error fetching groups', error: err.message });
+    }
+};
+
+export const getGroupById = async (req, res) => {
+
+    try{
+        const group = await Group.findById(req.params.id)
+            .populate('members', 'username email')
+            .populate('createdBy', 'username email');
+
+        if (!group) {
+            return res.status(404).json({ message: 'Group not found' });
+        }
+
+        res.status(200).json(group);
+    }catch(error){
+        res.status(500).json({ message: 'Error fetching group', error: error.message });
+    }
+};
+
