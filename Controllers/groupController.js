@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import Group from '../Models/groupModel.js';
+import User from '../Models/userModel.js';
+import { sendEmail } from '../../utils/sendEmail.js';
 
 //----------------
 // Create a new group
@@ -50,6 +52,19 @@ export const createGroup = async (req, res) => {
         // Save the group to the database
         await group.save();
         res.status(201).json({ message: 'Group created successfully', group });
+
+        //fetch memmbers email
+        const members = await User.find({_id:{$in:validMembers}});
+
+        for(const user of members){
+            if(user._id.toString() !== userId){
+                await sendEmail({
+                    to: user.email,
+                    subject: 'You have been added to a new group',
+                    text: `Hello ${user.username},\n\nYou have been added to the group "${name}" by ${req.user.username}.\n\nDescription: ${description}\n\nBest regards,\nSplitSmart Team`
+                });
+            }
+        }
     } catch (err) {
         console.error(err);
         res.status(500).json({ message: 'Error creating group', error: err.message });
