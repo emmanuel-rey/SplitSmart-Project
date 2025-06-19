@@ -29,6 +29,11 @@ const settlementSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  paymentStatus:{
+    type: String,
+    enum: ['pending','paid','failed'],
+    default:'pending'
+  }
 });
 
 export default mongoose.model('Settlement', settlementSchema);

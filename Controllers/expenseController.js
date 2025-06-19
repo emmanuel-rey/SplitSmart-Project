@@ -12,12 +12,20 @@ export const addExpense = async (req, res) => {
         return res.status(404).json({ message: 'Group not found' });
     }
 
+    const equalShare = amount / splitBetween.length;
+
+    const processedSplit = splitBetween.map(userId =>({
+        user:userId,
+        amountOwed:equalShare
+    }));
+
+
     const expense = new Expense({
         group: groupId,
         description,
         amount,
         paidBy,
-        splitBetween
+        splitBetween:processedSplit
     });
 
     await expense.save();

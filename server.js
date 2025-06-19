@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import connectDB from "./config/db.js";
 import cors from "cors";
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 import app from "./app.js"
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './swagger.js';

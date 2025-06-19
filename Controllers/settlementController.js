@@ -1,6 +1,7 @@
 import Expense from '../Models/expenseModel.js';
 import User from '../Models/userModel.js';
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
+import Settlement from '../Models/settlementModel.js';
 
 // Calculate who owes whom
 export const getSettlementSummary = async (req, res) => {
@@ -12,11 +13,13 @@ export const getSettlementSummary = async (req, res) => {
         const balanceSheet = {}; // { userId: totalBalance }
 
         for (const expense of expenses) {
-            const splitAmount = expense.amount / expense.splitBetween.length;
+            // const splitAmount = expense.amount / expense.splitBetween.length;
 
-            expense.splitBetween.forEach(userId => {
+            expense.splitBetween.forEach(entry => {
+                const userId = entry.user;
+                const owed = entry.amountOwed;
             if (!balanceSheet[userId]) balanceSheet[userId] = 0;
-            balanceSheet[userId] -= splitAmount;
+            balanceSheet[userId] -= owed;
         });
 
         if (!balanceSheet[expense.paidBy]) balanceSheet[expense.paidBy] = 0;
@@ -27,7 +30,7 @@ export const getSettlementSummary = async (req, res) => {
     const users = await User.find({ _id: { $in: Object.keys(balanceSheet) } });
 
     const summary = users.map(user => ({
-        user: { id: user._id, name: user.name, email: user.email },
+        user: { id: user._id, name: user.username, email: user.email },
         balance: balanceSheet[user._id]
     }));
 
@@ -44,11 +47,24 @@ export const settleUp = async (req, res) => {
     const { fromUserId, toUserId, amount } = req.body;
 
     try {
+
+        const newSettlement = new Settlement({
+            group:groupId,
+            from:fromUserId,
+            to:toUserId,
+            amount,
+            method:'Transfer' |'Cash'|'Other',
+            paymentStatus:'pending'
+        });
+
+        await newSettlement.save();
         // In a real system, you’d store this in a settlement log
         // For now, just simulate
         res.status(200).json({
-            message: `User ${fromUserId} settled ₦${amount} with User ${toUserId} in Group ${groupId}.`
+            message: "Debt settled",
+            newSettlement,
         });
+        await Settlement.findByIdAndUpdate(newSettlement._id, { paymentStatus: 'paid' });
 
     } catch (err) {
         res.status(500).json({ message: 'Error settling payment', error: err.message });
