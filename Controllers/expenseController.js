@@ -6,31 +6,41 @@ export const addExpense = async (req, res) => {
     const { groupId } = req.params;
     const { description, amount, paidBy, splitAmong } = req.body;
 
-
     try {
-    const group = await Group.findById(groupId);
-    if (!group) {
+        const group = await Group.findById(groupId);
+        if (!group) {
         return res.status(404).json({ message: 'Group not found' });
-    }
+        }
 
-    const expense = new Expense({
+        const validSplitUsers = splitAmong?.filter(id => id && id !== 'null');
+        const splitCount = validSplitUsers.length;
+
+        if (splitCount === 0) {
+        return res.status(400).json({ message: 'At least one user must be included in splitAmong.' });
+        }
+
+        const amountPerUser = amount / splitCount;
+
+        const splitBetween = validSplitUsers.map(userId => ({
+        user: new mongoose.Types.ObjectId(userId),
+        amountOwed: amountPerUser,
+        }));
+
+        const expense = new Expense({
         group: groupId,
         description,
         amount,
-        paidBy,
-        splitBetween: splitAmong.map(userId => {
-            if (!userId || userId === 'null') return null; // Skip null or empty IDs
-            return userId;
-        })
-    });
+        paidBy: new mongoose.Types.ObjectId(paidBy),
+        splitBetween,
+        });
 
-    await expense.save();
-    res.status(201).json({ message: 'Expense added successfully', expense });
+        await expense.save();
+        res.status(201).json({ message: 'Expense added successfully', expense });
 
-    }catch (err) {
+    } catch (err) {
         res.status(500).json({ message: 'Error adding expense', error: err.message });
     }
-};
+    };
 
 // Get all expenses for a group
 export const getExpensesByGroup = async (req, res) => {
