@@ -58,6 +58,15 @@ export const createGroup = async (req, res) => {
 
         for(const user of members){
             if(user._id.toString() !== userId){
+                
+                //save DB
+                await Notification.create({
+                    user: user._id,
+                    message: `You've been added to the group "${name}".`,
+                    type: 'group_invite',
+                    group: group._id
+                });
+                
                 await sendEmail({
                     to: user.email,
                     subject: 'You have been added to a new group',

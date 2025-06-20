@@ -8,6 +8,7 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './swagger.js';
 import expenseRoutes from "./Routes/expenseRoute.js";
 import settlementRoutes from "./Routes/settlementRoute.js";
+import notificationRoute from './Routes/notificationRoute.js';
 
 
 dotenv.config();
@@ -37,6 +38,9 @@ app.use('/api/expenses', expenseRoutes);
 
 // Settlement routes
 app.use('/api/settlements', settlementRoutes);
+
+//for notfication
+app.use('/api/notifications', notificationRoute);
 
 // Test route
 app.get('/', (_req, res) => {
