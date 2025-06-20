@@ -4,7 +4,8 @@ import Group from '../Models/groupModel.js';
 // Add new expense
 export const addExpense = async (req, res) => {
     const { groupId } = req.params;
-    const { description, amount, paidBy, splitBetween } = req.body;
+    const { description, amount, paidBy, splitAmong } = req.body;
+
 
     try {
     const group = await Group.findById(groupId);
@@ -17,7 +18,10 @@ export const addExpense = async (req, res) => {
         description,
         amount,
         paidBy,
-        splitBetween
+        splitBetween: splitAmong.map(userId => {
+            if (!userId || userId === 'null') return null; // Skip null or empty IDs
+            return userId;
+        })
     });
 
     await expense.save();
