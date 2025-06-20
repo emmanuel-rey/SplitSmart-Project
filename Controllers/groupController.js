@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 import Group from '../Models/groupModel.js';
 
-//----------------
+//--------------------
 // Create a new group
-//----------------
+//--------------------
 
 
 export const createGroup = async (req, res) => {
