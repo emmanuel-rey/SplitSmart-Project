@@ -67,6 +67,55 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 
 ---
 
+### Sample JSON test format
+
+#### `/api/users/register`
+```
+{
+    "username": "John Doe",
+    "email": "johndoe@example.com",
+    "password": "password123"
+}
+```
+---
+#### `/api/users/login`
+```
+{
+  "email": "johndoe@example.com",
+  "password": "password123"
+}
+
+```
+---
+#### `/api/groups`
+```
+{
+  "name": "Trip to Lokoja",
+  "description": "Expense group for our Lokoja trip",
+  "members": [
+    "665d5d078748329218ae67",
+    "684b9eb3a2806ef956784b1"
+  ]
+}
+
+```
+---
+#### `/api/expenses/<groupID>`
+```
+{
+  "description": "Ice Cream for the squad 🍨"
+  "amount": 27000,
+  "paidBy": "684b9eb3a2806ef956784b1",
+  "splitAmong": [
+    "665d5d078748329218ae67",
+    "684b9eb3a2806ef956784b1"
+  ]
+}
+
+```
+
+
+
 ## 🔄 API Routes Overview
 
 | Endpoint                         | Method | Description                   | Auth Required  |
