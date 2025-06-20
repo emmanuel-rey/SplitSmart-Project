@@ -6,32 +6,53 @@ import Group from '../Models/groupModel.js';
 //--------------------
 
 
-export const addExpense = async (req, res) => {
-    const { groupId } = req.params;
-    const { description, amount, paidBy, splitAmong } = req.body;
+export const createGroup = async (req, res) => {
+    const { name, description, members } = req.body;
 
+    // Defensive: Check if req.user exists
+    if (!req.user || !req.user.id) {
+        return res.status(401).json({ message: 'Unauthorized: User ID missing' });
+    }
+
+    const userId = req.user.id;
+
+    // Check if group exists
+    const existingGroup = await Group.findOne({ name });
+    if (existingGroup) {
+        return res.status(400).json({ message: 'Group name already exists' });
+    }
+
+    // Validate input
     try {
-        const group = await Group.findById(groupId);
-        if (!group) {
-        return res.status(404).json({ message: 'Group not found' });
+        let validMembers = Array.isArray(members)
+            ? members.filter(
+                id => id && mongoose.Types.ObjectId.isValid(id) && id !== 'null'
+            )
+            : [];
+
+        // Avoid duplicates and nulls
+        if (!validMembers.includes(userId)) {
+            validMembers.push(userId);
         }
 
-        const cleanedSplitBetween = splitAmong?.filter(id => id && id !== 'null');
+        // Defensive measure: remove duplicates + null again
+        validMembers = [...new Set(validMembers)].filter(Boolean);
 
-        const expense = new Expense({
-        group: groupId,
-        description,
-        amount,
-        paidBy,
-        splitBetween: cleanedSplitBetween,
+        const group = new Group({
+            name,
+            description,
+            members: validMembers,
+            createdBy: userId,
         });
 
-        await expense.save();
-        res.status(201).json({ message: 'Expense added successfully', expense });
+        // const userId = req.user.id;
 
+        // Save the group to the database
+        await group.save();
+        res.status(201).json({ message: 'Group created successfully', group });
     } catch (err) {
-        res.status(500).json({ message: 'Error adding expense', error: err.message });
+        console.error(err);
+        res.status(500).json({ message: 'Error creating group', error: err.message });
     }
-    };
-
+};
 
