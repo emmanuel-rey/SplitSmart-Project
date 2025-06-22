@@ -1,6 +1,5 @@
 import Expense from '../Models/expenseModel.js';
 import User from '../Models/userModel.js';
-import mongoose from 'mongoose';
 
 // Calculate who owes whom
 export const getSettlementSummary = async (req, res) => {
