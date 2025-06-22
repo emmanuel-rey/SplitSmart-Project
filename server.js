@@ -2,14 +2,14 @@ import dotenv from "dotenv";
 import express from "express";
 import connectDB from "./config/db.js";
 import cors from "cors";
-import mongoose from "mongoose";
 import app from "./app.js"
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './swagger.js';
 import expenseRoutes from "./Routes/expenseRoute.js";
 import settlementRoutes from "./Routes/settlementRoute.js";
+import inviteRoutes from './Routes/inviteRoute.js';
 
-
+// Load environment variables
 dotenv.config();
 
 // Connect to the database
@@ -19,12 +19,10 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
-// DB connection
-// mongoose.connect('mongodb://localhost:27017/splitsmart', { useNewUrlParser: true, useUnifiedTopology: true });
-
 // Routes
 import groupRoutes from "./Routes/groupRoute.js";
 import userRoutes from "./Routes/userRoute.js";
+
 
 // User routes
 app.use('/api/users', userRoutes);
@@ -37,6 +35,9 @@ app.use('/api/expenses', expenseRoutes);
 
 // Settlement routes
 app.use('/api/settlements', settlementRoutes);
+
+// Invite routes
+app.use('/api/invite', inviteRoutes);
 
 // Test route
 app.get('/', (_req, res) => {
