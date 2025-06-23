@@ -1,7 +1,5 @@
 import express from 'express';
-// import {createGroup, getGroups, getGroupById, updateGroup, deleteGroup} from '../Controllers/groupController.js';
-import { getGroupById } from '../Controllers/groupController.js';
-import { createGroup } from '../Controllers/groupController.js';
+import { createGroup, getGroupById, deleteGroup } from '../Controllers/groupController.js';
 import { protect } from '../Middlewares/authMiddleware.js';
 
 
@@ -136,15 +134,41 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized
  */
+/**
+ * @swagger
+ * /api/groups/{id}:
+ *   delete:
+ *     summary: Delete a group by ID
+ *     tags: [Groups]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the group to delete
+ *     responses:
+ *       200:
+ *         description: Group deleted successfully
+ *       404:
+ *         description: Group not found
+ *       401:
+ *         description: Unauthorized
+ */
+
 
 
 // Route to create a new group
 router.post('/', protect,createGroup);
 
 
-// Route to get a single group by ID
 router.get('/', protect, getGroupById);
 
+// Route to delete group
 
+router.delete('/:id', protect, deleteGroup);
 
 export default router;
+
