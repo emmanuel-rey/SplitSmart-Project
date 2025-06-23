@@ -21,15 +21,16 @@ import bcrypt from 'bcryptjs';
 
 
         // Generate token 
-        const payload = { user: { id: newUser._id } };
+        const payload = { email: newUser.email };
         const token = jwt.sign(payload, process.env.JWT_SECRET, {
             expiresIn: '1h'
         });
 
+
         res.status(201).json({
         message: 'User registered successfully',
         user: {
-        id: newUser._id,
+        email: newUser.email,
         username: newUser.username,
         email: newUser.email,
         },
@@ -69,14 +70,14 @@ export const loginUser = async (req, res) => {
 
         // Sign JWT token
         const token = jwt.sign(
-            { user: { id: user._id } },
+            { user: { email: user.email } },
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
 
         return res.status(200).json({
             message: 'Login successful',
-            user: { id: user._id, 
+            user: { email: user.email, 
                     username: user.username, 
                     email: user.email 
                 }, token,

@@ -59,7 +59,7 @@ export const sendGroupInvite = async (req, res) => {
             );
     
             res.status(200).send(`<h2>You’ve joined the group successfully 🎉</h2>`);
-            console.log(`📩 [DEV LOG] User ${email} joined group ${groupId}`);
+            console.log(`📩 [DEV LOG] User ${userEmail} joined group ${groupId}`);
         } catch (err) {
             res.status(400).json({ message: 'Invalid or expired invite token', error: err.message });
         }
