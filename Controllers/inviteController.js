@@ -45,7 +45,6 @@ export const sendGroupInvite = async (req, res) => {
     // Accept group invite
     export const acceptGroupInvite = async (req, res) => {
     const { token } = req.query;
-
     try {
         const decoded = jwt.verify(token, process.env.INVITE_SECRET);
         const { email, groupId } = decoded;

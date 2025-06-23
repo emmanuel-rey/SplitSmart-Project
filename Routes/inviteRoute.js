@@ -85,7 +85,6 @@ const router = express.Router();
  *         description: Invalid or expired token
  */
 
-
 // Route to invite a user to a group
 
 router.post('/group/:groupId/invite', protect, sendGroupInvite);
