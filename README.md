@@ -29,18 +29,24 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 - Create groups for events (e.g., "Ibadan Trip").
 - Each group has a name, description, and list of members.
 - Group creator is automatically added to the members list.
-- Endpoint: `POST /api/groups` (Protected)
+- Endpoint:
+   - `POST /api/groups` (Protected)
+   - `GET /api/groups/:groupID`;  View groups that contains an authorized token for a user
+   - `GET /api/groups`; View all groups
 
 ### ✅ Expense Management
 - Add expenses to a group.
 - Each expense has: title, amount, paidBy, groupId, and participants.
-- Endpoint: `POST /api/expenses` (Protected)
-- View group expenses: `GET /api/expenses/group/:groupId`
+- Endpoint:
+     - `POST /api/expenses` (Protected); to add new expense for a group
+     - `GET /api/expenses/groups/:groupId`; to view all expenses for a group
 
 ### ✅ Settlement System
 - Automatically compute who owes whom based on expenses.
-- Return a breakdown of settlements within a group.
-- Endpoint: `GET /api/settlements/group/:groupId`
+- Endpoint:
+   - `POST /api/settlement/groupID/settle` ; Record a breakdown of settlements between users within a group.
+   - `GET /api/settlements/:groupId/transactions`; Suggest who owes who in a group (based on expenses)
+   - `GET /api/settlements/:groupId` ; Fetch all recorded settlement in a group
 
 ### ✅ Swagger API Documentation
 - Fully documented API with Swagger.
@@ -92,10 +98,11 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 {
   "name": "Trip to Lokoja",
   "description": "Expense group for our Lokoja trip",
-  "members": [
-    "665d5d078748329218ae67",
-    "684b9eb3a2806ef956784b1"
-  ]
+ "members": [
+      "user2@gmail.com",
+      "user3@gmail.com",
+      "user4@gmail.com"
+   ]
 }
 
 ```
@@ -105,14 +112,28 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 {
   "description": "Ice Cream for the squad 🍨"
   "amount": 27000,
-  "paidBy": "684b9eb3a2806ef956784b1",
+  "paidBy": "user3@gmail.com",
   "splitAmong": [
-    "665d5d078748329218ae67",
-    "684b9eb3a2806ef956784b1"
+    "user1@gmail.com"
+    "user2@gmail.com",
+    "user3@gmail.com",
+    "user4@gmail.com"
   ]
 }
 
 ```
+---
+#### `/api/settlements/<groupID>settle`
+```
+{
+  "fromEmail": "user1@gmail.com",
+  "toEmail": "user3@gmail.com",
+  "amount": 900,
+  "totalOwed": 3000
+}
+
+```
+---
 
 
 
@@ -123,9 +144,12 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 | `/api/users/register`            | POST   | Register a new user           | ❌              |
 | `/api/users/login`               | POST   | Log in user, returns JWT      | ❌              |
 | `/api/groups`                    | POST   | Create a new group            | ✅              |
-| `/api/expenses`                  | POST   | Add expense to group          | ✅              |
+| `/api/expenses/:groupId`         | POST   | Add expense to group          | ✅              |
+| `api/settlements/:groupId/settle`| POST   | Record payment between users  | ✅              |
 | `/api/expenses/group/:groupId`   | GET    | View all group expenses       | ✅              |
-| `/api/settlements/group/:id`     | GET    | View group settlements        |  ✅             |
+| `/api/groups/groupId`             | GET    | Get a single group by ID      | ✅              |
+| `/api/settlements/groupid`       | GET    | Fetch all settlements         |  ✅             |
+| `/api/settlements/groupid/transactions` | GET | Suggest who owes who   |  ✅             |
 | `/api-docs`                      | GET    | Swagger API Documentation     | ❌              |
 
 ---
