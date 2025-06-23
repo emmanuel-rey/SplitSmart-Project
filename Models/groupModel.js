@@ -7,12 +7,13 @@ const groupSchema = new Schema({
     description:{ type: String},
     members:[
         {
-            type: Schema.Types.ObjectId,
+            type: String,
+            required: true,
             ref:'User'
         }
     ],
     createdBy:{
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: 'User',
         required: true
     },

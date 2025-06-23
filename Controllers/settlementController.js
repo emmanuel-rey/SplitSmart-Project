@@ -1,55 +1,131 @@
 import Expense from '../Models/expenseModel.js';
 import User from '../Models/userModel.js';
+import Settlement from '../Models/settlementModel.js';
 
-// Calculate who owes whom
-export const getSettlementSummary = async (req, res) => {
+
+export const settleUp = async (req, res) => {
+    const { groupId } = req.params;
+    const { fromEmail, toEmail, amount, totalOwed } = req.body;
+
+    if (!fromEmail || !toEmail || !amount || isNaN(amount)) {
+        return res.status(400).json({ message: 'fromEmail, toEmail, numeric amount, and totalOwed are required.' });
+    }
+
+    try {
+        const amountNum = parseFloat(amount);
+        const totalOwedNum = parseFloat(totalOwed);
+
+        // Check if there's a previous settlement between these users in this group
+        let existing = await Settlement.findOne({ group: groupId, fromUser: fromEmail, toUser: toEmail });
+
+        if (existing) {
+        existing.amountPaid += amountNum;
+        existing.remainingAmount = Math.max(totalOwedNum - existing.amountPaid, 0);
+        existing.status = existing.remainingAmount === 0 ? 'paid' : 'partial';
+        await existing.save();
+
+        } else {
+        const remaining = Math.max(totalOwedNum - amountNum, 0);
+        const status = remaining === 0 ? 'paid' : 'partial';
+
+        existing = new Settlement({
+            group: groupId,
+            fromUser: fromEmail,
+            toUser: toEmail,
+            totalOwed: totalOwedNum,
+            amountPaid: amountNum,
+            remainingAmount: remaining,
+            status,
+        });
+
+        await existing.save();
+        }
+
+        res.status(200).json({
+        message: `${fromEmail} has paid ₦${amountNum} to ${toEmail} in Group ${groupId}.`,
+        settlement: existing,
+        });
+
+    } catch (err) {
+        console.error('Settlement error:', err);
+        res.status(500).json({ message: 'Error settling payment', error: err.message });
+    }
+    };
+
+    // Suggest who owes who how much based on all expenses
+    export const calculateDetailedSettlement = async (req, res) => {
     const { groupId } = req.params;
 
     try {
         const expenses = await Expense.find({ group: groupId });
 
-        const balanceSheet = {}; // { userId: totalBalance }
+        const balances = {}; // { email: netBalance }
 
         for (const expense of expenses) {
-            const splitAmount = expense.amount / expense.splitBetween.length;
+        const amountPerUser = expense.amount / expense.splitBetween.length;
 
-            expense.splitBetween.forEach(userId => {
-            if (!balanceSheet[userId]) balanceSheet[userId] = 0;
-            balanceSheet[userId] -= splitAmount;
-        });
+        for (const entry of expense.splitBetween) {
+            const email = entry.user; // Extract actual email from object
+            if (!balances[email]) balances[email] = 0;
+            balances[email] -= amountPerUser;
+}
 
-        if (!balanceSheet[expense.paidBy]) balanceSheet[expense.paidBy] = 0;
-        balanceSheet[expense.paidBy] += expense.amount;
-    }
+        const payerEmail = expense.paidBy;
+        if (!balances[payerEmail]) balances[payerEmail] = 0;
+        balances[payerEmail] += expense.amount;
+        }
 
-    // Return a simplified summary
-    const users = await User.find({ _id: { $in: Object.keys(balanceSheet) } });
+        const creditors = [], debtors = [];
 
-    const summary = users.map(user => ({
-        user: { id: user._id, name: user.name, email: user.email },
-        balance: balanceSheet[user._id]
-    }));
+        for (const [email, balance] of Object.entries(balances)) {
+        if (balance > 0) {
+            creditors.push({ email, amount: balance });
+        } else if (balance < 0) {
+            debtors.push({ email, amount: -balance });
+        }
+        }
 
-    res.status(200).json(summary);
+        const settlements = [];
 
+        for (const debtor of debtors) {
+            let amountToSettle = debtor.amount;
+
+            for (const creditor of creditors) {
+                if (amountToSettle === 0) break;
+                if (creditor.amount === 0) continue;
+
+                const settledAmount = Math.min(amountToSettle, creditor.amount);
+
+                if (debtor.email !== creditor.email) {
+                settlements.push({
+                    message: `${debtor.email} owes ${creditor.email} ₦${parseFloat(settledAmount.toFixed(2))}`,
+                    from: debtor.email,
+                    to: creditor.email,
+                    amount: parseFloat(settledAmount.toFixed(2)),
+                });
+
+                }
+
+                creditor.amount -= settledAmount;
+                amountToSettle -= settledAmount;
+            }
+            }
+
+
+        res.status(200).json(settlements);
     } catch (err) {
-    res.status(500).json({ message: 'Error calculating settlements', error: err.message });
+        res.status(500).json({ message: 'Error calculating detailed settlements', error: err.message });
     }
-};
+    };
 
-// Mark a debt as settled
-export const settleUp = async (req, res) => {
+    // Fetch all stored settlement transactions in a group
+    export const getGroupSettlements = async (req, res) => {
     const { groupId } = req.params;
-    const { fromUserId, toUserId, amount } = req.body;
 
     try {
-        // In a real system, you’d store this in a settlement log
-        // For now, just simulate
-        res.status(200).json({
-            message: `User ${fromUserId} settled ₦${amount} with User ${toUserId} in Group ${groupId}.`
-        });
-
+        const settlements = await Settlement.find({ group: groupId });
+        res.status(200).json(settlements);
     } catch (err) {
-        res.status(500).json({ message: 'Error settling payment', error: err.message });
+        res.status(500).json({ message: 'Error fetching settlements', error: err.message });
     }
-};
+    };
