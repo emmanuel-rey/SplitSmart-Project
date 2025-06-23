@@ -3,29 +3,37 @@ import mongoose from 'mongoose';
 const settlementSchema = new mongoose.Schema({
   group: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'groupModel',
+    ref: 'Group',
     required: true,
   },
-  from: {
-    type: mongoose.Schema.Types.ObjectId,
+  fromUser: {
+    type: String,
     ref: 'User',
     required: true,
   },
-  to: {
-    type: mongoose.Schema.Types.ObjectId,
+  toUser: {
+    type: String,
     ref: 'User',
     required: true,
   },
-  amount: {
+  amountPaid: {
     type: Number,
     required: true,
   },
-  method: {
-    type: String,
-    enum: ['Transfer', 'Cash', 'Other'],
-    default: 'Transfer',
+  totalOwed: {
+    type: Number,
+    required: true,
   },
-  settledAt: {
+  remainingAmount: {
+    type: Number,
+    required: true,
+  },
+  status: {
+    type: String,
+    enum: ['partial', 'paid'],
+    default: 'partial',
+  },
+  paidAt: {
     type: Date,
     default: Date.now,
   },

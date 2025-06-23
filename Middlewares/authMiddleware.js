@@ -1,20 +1,39 @@
 import jwt from 'jsonwebtoken';
+import User from '../Models/userModel.js';
 
-export const authMiddleware = (req, res, next) => {
-    
-    const token = req.headers.authorization?.split(' ')[1];
+export const protect = async (req, res, next) => {
+    let token;
 
-    if (!token) {
-        return res.status(401).json({ message: 'No token provided, authorization denied' });
-    }
 
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded.user;
+    if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith('Bearer')
+    ) {
+        try {
+            token = req.headers.authorization.split(' ')[1];
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            console.log('Decoded JWT payload:', decoded);
+            console.log('Looking for user with email:', decoded.user.email);
+
+            const user = await User.findOne({ email: decoded.user.email });
+            console.log('User found:', user);
+            
+            if (!user) {
+            return res.status(401).json({ message: 'User not found' });
+        }
+
+        req.user = {
+            email: user.email,
+            name: user.name,
+            id: user._id,
+        };
+
         next();
-    } catch (err) {
-        res.status(401).json({ message: 'Token is not valid', error: err.message });
+        } catch (err) {
+            console.error(err);
+            res.status(401).json({ message: 'Not authorized, token failed' });
+        }
+    } else {
+    res.status(401).json({ message: 'Not authorized, no token' });
     }
-    };
-
-
+};
