@@ -15,9 +15,11 @@ export const addExpense = async (req, res) => {
         return res.status(404).json({ message: 'Group not found' });
     }
 
-    const validSplitUsers = Array.isArray(splitAmong)
-    ? splitAmong.filter(email => email && email !== 'null')
-    : [];
+    const rawEmails = Array.isArray(splitAmong) ? splitAmong : [];
+    const emailSet = new Set([...rawEmails, paidBy]); // force include paidBy
+    const validSplitUsers = Array.from(emailSet).filter(
+        email => email && email !== 'null'
+    );
 
     const splitCount = validSplitUsers.length;
 
