@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import Group from '../Models/groupModel.js';
 import User from '../Models/userModel.js';
-import { sendEmail } from '../../utils/sendEmail.js';
+import { sendEmail } from '../utils/sendEmail.js';
 
 //----------------
 // Create a new group

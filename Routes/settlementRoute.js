@@ -3,6 +3,7 @@ import express from 'express';
 import { getSettlementSummary } from '../Controllers/settlementController.js';
 import { settleUp } from '../Controllers/settlementController.js';
 import { authMiddleware as protect } from '../Middlewares/authMiddleware.js';
+import { handlePagaCallback } from '../Controllers/settlementController.js';
 
 
 // swagger documentation for settlement routes
