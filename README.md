@@ -134,6 +134,13 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 
 ```
 ---
+#### `/api/invite/group/<groupID>invite`
+```
+{
+  "email": "invitee@example.com"
+}
+```
+---
 
 
 
@@ -149,7 +156,9 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 | `/api/expenses/group/:groupId`   | GET    | View all group expenses       | ✅              |
 | `/api/groups/groupId`             | GET    | Get a single group by ID      | ✅              |
 | `/api/settlements/groupid`       | GET    | Fetch all settlements         |  ✅             |
-| `/api/settlements/groupid/transactions` | GET | Suggest who owes who   |  ✅             |
+| `/api/settlements/groupid/transactions` | GET | Suggest who owes who     |  ✅             |
+| `/api/invite/group/<groupID>invite`| POST   | Send invite link via eamil  | ✅             |      
+| `/api/invite/accept`            | GET   | Accept an invite and join group| ❌              |
 | `/api-docs`                      | GET    | Swagger API Documentation     | ❌              |
 
 ---
