@@ -23,6 +23,7 @@ const expenseSchema = new mongoose.Schema({
         {
         user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
         amountOwed: { type: Number },
+        settled: { type: Boolean, default: false }
         },
     ],
     createdAt: {

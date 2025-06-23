@@ -20,20 +20,26 @@ const settlementSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  method: {
-    type: String,
-    enum: ['Transfer', 'Cash', 'Other'],
-    default: 'Transfer',
-  },
-  settledAt: {
-    type: Date,
-    default: Date.now,
-  },
-  paymentStatus:{
-    type: String,
-    enum: ['pending','paid','failed'],
-    default:'pending'
-  }
-});
+    description: String,
+    method: {
+        type: String,
+        enum: ['USSD', 'Transfer', 'Cash', 'Other'],
+        default: 'USSD'
+    },
+    status: {
+        type: String,
+        enum: ['initiated', 'pending', 'completed', 'failed'],
+        default: 'initiated'
+    },
+    pagaReference: String,
+    paymentData: Object,
+    callbackData: Object,
+    amountReceived: Number,
+    settledAt: Date,
+    expenses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Expense'
+    }]
+},{ timestamps: true });
 
 export default mongoose.model('Settlement', settlementSchema);
