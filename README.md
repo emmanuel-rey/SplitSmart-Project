@@ -1,4 +1,4 @@
-# SplitSmart 💸 - Simple Group Expense Splitter
+# SplitSmart - Simple Group Expense Splitter
 
 SplitSmart is a simple and mobile-friendly web app to help groups of friends, roommates, or families share and settle expenses easily and fairly.
 
@@ -6,7 +6,7 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 
 
 
-## 🚀 Features
+## Features
 - Create groups (e.g., "Trip to Lagos", "Rent Sharing")
 - Add members to groups
 - Record expenses and assign payers/participants
@@ -16,16 +16,16 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 - Basic user authentication (sign up, log in)
 
 
-## 🚀 Features Implemented
+## Features Implemented
 
-### ✅ Authentication
+### Authentication
 - **User Sign-up/Login** using email and phone.
 - JWT-based authentication system.
 - Middleware for protecting private routes.
 - Endpoint: `POST /api/users/register`  
 - Endpoint: `POST /api/users/login`  
 
-### ✅ Group Management
+### Group Management
 - Create groups for events (e.g., "Ibadan Trip").
 - Each group has a name, description, and list of members.
 - Group creator is automatically added to the members list.
@@ -34,21 +34,21 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
    - `GET /api/groups/:groupID`;  View groups that contains an authorized token for a user
    - `GET /api/groups`; View all groups
 
-### ✅ Expense Management
+### Expense Management
 - Add expenses to a group.
 - Each expense has: title, amount, paidBy, groupId, and participants.
 - Endpoint:
      - `POST /api/expenses` (Protected); to add new expense for a group
      - `GET /api/expenses/groups/:groupId`; to view all expenses for a group
 
-### ✅ Settlement System
+### Settlement System
 - Automatically compute who owes whom based on expenses.
 - Endpoint:
    - `POST /api/settlement/groupID/settle` ; Record a breakdown of settlements between users within a group.
    - `GET /api/settlements/:groupId/transactions`; Suggest who owes who in a group (based on expenses)
    - `GET /api/settlements/:groupId` ; Fetch all recorded settlement in a group
 
-### ✅ Swagger API Documentation
+### Swagger API Documentation
 - Fully documented API with Swagger.
 - Accessible via: `http://localhost:4000/api-docs`
 - Includes descriptions for endpoints, request formats, and error responses.
@@ -56,27 +56,27 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 
 ---
 
-## 🧪 How to Test
+## How to Test
 
-### 📦 Requirements
+### Requirements
 - Node.js v18+
 - MongoDB installed or Atlas connection
 - Postman or Swagger UI
 
-### 🔐 Getting a JWT Token
+###� Getting a JWT Token
 1. Register a user: `POST /api/users/register`
 2. Log in with that user: `POST /api/users/login`
 3. Copy the returned JWT token.
 4. Use it in:
    - Postman: Authorization > Bearer Token
-   - Swagger: Authorize 🔒 button > enter `Bearer <your_token>`
+   - Swagger: Authorize button > enter `Bearer <your_token>`
 
 ---
 
 ### Sample JSON test format
 
 #### `/api/users/register`
-```
+```json
 {
     "username": "John Doe",
     "email": "johndoe@example.com",
@@ -85,7 +85,7 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 ```
 ---
 #### `/api/users/login`
-```
+```json
 {
   "email": "johndoe@example.com",
   "password": "password123"
@@ -94,7 +94,7 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 ```
 ---
 #### `/api/groups`
-```
+```json
 {
   "name": "Trip to Lokoja",
   "description": "Expense group for our Lokoja trip",
@@ -108,9 +108,9 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 ```
 ---
 #### `/api/expenses/<groupID>`
-```
+```json
 {
-  "description": "Ice Cream for the squad 🍨"
+  "description": "Ice Cream for the squad"
   "amount": 27000,
   "paidBy": "user3@gmail.com",
   "splitAmong": [
@@ -124,7 +124,7 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 ```
 ---
 #### `/api/settlements/<groupID>settle`
-```
+```json
 {
   "fromEmail": "user1@gmail.com",
   "toEmail": "user3@gmail.com",
@@ -135,7 +135,7 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 ```
 ---
 #### `/api/invite/group/<groupID>invite`
-```
+```json
 {
   "email": "invitee@example.com"
 }
@@ -144,7 +144,7 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 
 
 
-## 🔄 API Routes Overview
+## API Routes Overview
 
 | Endpoint                         | Method | Description                   | Auth Required  |
 |----------------------------------|--------|-------------------------------|---------------  |
@@ -163,7 +163,7 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 
 ---
 
-## 🪖 Tech Stack
+## Tech Stack
 - *Frontend*: React, TailwindCSS
 - *Backend*: Node.js, Express.js
 - *Database*: MongoDB with Mongoose
@@ -172,7 +172,7 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Split-Smart API/
@@ -210,7 +210,7 @@ Split-Smart API/
 ---
 
 
-## 🌟 Future Features
+## Future Features
 - Premium account (reminders, reports)
 - PDF export of expenses
 - Real-time notifications
@@ -220,7 +220,7 @@ Split-Smart API/
 
 ---
 
-## 💰 Subscription Plans
+## Subscription Plans
 - Small fee for in-app payments (NGN 10 - 50)
 - Premium tier (NGN 500/month)
 - Ads for free users
@@ -229,5 +229,5 @@ Split-Smart API/
 ---
 
 
-## 💪 License
+## License
 MIT License. See LICENSE file for details.
