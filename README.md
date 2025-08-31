@@ -63,7 +63,7 @@ SplitSmart is a simple and mobile-friendly web app to help groups of friends, ro
 - MongoDB installed or Atlas connection
 - Postman or Swagger UI
 
-###� Getting a JWT Token
+### � Getting a JWT Token
 1. Register a user: `POST /api/users/register`
 2. Log in with that user: `POST /api/users/login`
 3. Copy the returned JWT token.
