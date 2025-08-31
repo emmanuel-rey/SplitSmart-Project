@@ -2,8 +2,8 @@ import express from 'express';
 import { sendGroupInvite, acceptGroupInvite } from '../Controllers/inviteController.js';
 import { protect } from '../Middlewares/authMiddleware.js';
 
-
 const router = express.Router();
+
 
 // Swagger documentation for invite routes
 

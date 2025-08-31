@@ -1,5 +1,4 @@
 import Expense from '../Models/expenseModel.js';
-import User from '../Models/userModel.js';
 import Settlement from '../Models/settlementModel.js';
 
 
