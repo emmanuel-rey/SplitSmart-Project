@@ -3,7 +3,9 @@ import User from '../Models/userModel.js';
 import Group from '../Models/groupModel.js';
 import sendEmail from '../Services/sendEmails.js';
 
+
 // Send group invite email
+
 export const sendGroupInvite = async (req, res) => {
     const { groupId } = req.params;
     const { email } = req.body;
@@ -43,6 +45,7 @@ export const sendGroupInvite = async (req, res) => {
     };
 
     // Accept group invite
+
     export const acceptGroupInvite = async (req, res) => {
     const { token } = req.query;
     try {

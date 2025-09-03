@@ -1,7 +1,6 @@
 import Expense from '../Models/expenseModel.js';
 import Group from '../Models/groupModel.js';
-import User from '../Models/userModel.js';
-import mongoose from 'mongoose';
+
 
 
 // Add new expense
@@ -52,9 +51,9 @@ export const addExpense = async (req, res) => {
     }
 };
 
-// -------------------------
+// -----------------------------
 // Get all expenses for a group
-// -------------------------
+// -----------------------------
 export const getExpensesByGroup = async (req, res) => {
     const { groupId } = req.params;
 
